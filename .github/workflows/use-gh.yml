@@ -37,7 +37,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "${{ steps.slack.outputs.issues }}"
+                        "text": "${{ steps.slack.outputs.issues || 'No issues' }}"
                       }
                     }
                   ]
