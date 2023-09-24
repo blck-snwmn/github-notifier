@@ -32,7 +32,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "<${{github.event.issue.html_url}}|${{ github.event.issue.title }}>"
+                        "text": "<${{github.event.issue.html_url}}| #${{ github.event.issue.number }} ${{ github.event.issue.title }}>"
                       }
                     }
                   ]
