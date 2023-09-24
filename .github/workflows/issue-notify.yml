@@ -1,0 +1,49 @@
+name: tritter issue
+ 
+on:
+    issues:
+        types: [opened, reopened, labeled]
+
+jobs:
+  issued:
+    if: ${{github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'bug')}}
+    runs-on: ubuntu-latest
+    steps:
+        - name: Run
+          run: |
+            echo ${{ github.event.issue.title}}
+            echo ${{ github.event.issue.labels}}
+            echo ${{ contains(github.event.issue.labels.*.name, 'bug') }}
+            echo ${{ github.event.issue.body}}
+        - name: Post to a Slack channel
+          uses: slackapi/slack-github-action@v1.24.0
+          with:
+            channel-id: ${{ secrets.CHANNEL_ID}}
+            payload: |
+                {
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "New bug issue opened"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "<${{github.event.issue.url}}|${{ github.event.issue.title }}>"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "${{ github.event.issue.body }}"
+                      }
+                    }
+                  ]
+                }
+          env:
+            SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
